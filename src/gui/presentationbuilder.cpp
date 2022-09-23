@@ -315,7 +315,18 @@ namespace gui
                                     auto value = currentItems.value(valueName);
                                     if (!value.trimmed().isEmpty())
                                     {
-                                        m_source->setValue(elementInfo.key, valueName, registryEntryType, value);
+                                        bool conversionResult = false;
+                                        int conversionValue   = value.toInt(&conversionResult);
+
+                                        if (conversionResult)
+                                        {
+                                            RegistryEntryType registryEntryTypeForInt = RegistryEntryType::REG_DWORD;
+                                            m_source->setValue(elementInfo.key,valueName,registryEntryTypeForInt,value);
+                                        }
+                                        else
+                                        {
+                                            m_source->setValue(elementInfo.key, valueName, registryEntryType, value);
+                                        }
                                     }
                                 }
                                 *m_dataChanged = true;
